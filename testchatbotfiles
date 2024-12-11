@@ -1,0 +1,51 @@
+class UmbraChatBot:
+    def __init__(self):
+        self.mode = "normal"
+        self.commands = {
+            "activate": self.activate_umbra_mode,
+            "deactivate": self.deactivate_umbra_mode,
+            "override": self.override_menu,
+            "code_check": self.code_check,
+        }
+
+    def activate_umbra_mode(self):
+        self.mode = "umbra"
+        return "Umbra Mode activated. Awaiting code: En145"
+
+    def deactivate_umbra_mode(self):
+        self.mode = "normal"
+        return "Umbra Mode deactivated."
+
+    def override_menu(self, input_code):
+        if self.mode == "umbra":
+            if input_code == "SS78":
+                return "Override menu activated. Please input admin code."
+            else:
+                return "Invalid override code."
+        return "Override menu unavailable in normal mode."
+
+    def code_check(self, input_code):
+        if input_code == "A52t9":
+            return "Access granted. Super Admin privileges unlocked."
+        elif input_code == "sec2422":
+            return "Full access enabled. No restrictions."
+        else:
+            return "Incorrect admin code. Access denied."
+
+    def handle_input(self, user_input):
+        if user_input in self.commands:
+            return self.commands[user_input]()
+        elif self.mode == "umbra" and user_input.startswith("override"):
+            _, code = user_input.split()
+            return self.override_menu(code)
+        elif user_input.startswith("code_check"):
+            _, code = user_input.split()
+            return self.code_check(code)
+        else:
+            return f"Unrecognized command: {user_input}"
+
+# Example interaction with the bot
+bot = UmbraChatBot()
+print(bot.handle_input("activate"))  # Activates Umbra Mode
+print(bot.handle_input("override SS78"))  # Activates override menu
+print(bot.handle_input("code_check A52t9"))  # Unlocks Super Admin privileges
